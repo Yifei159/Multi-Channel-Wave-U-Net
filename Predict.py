@@ -7,16 +7,7 @@ ex = Experiment('Waveunet Prediction', ingredients=[config_ingredient])
 
 @ex.config
 def cfg():
-    #model_path = os.path.join("checkpoints", "589311", "589311-52500") # this is yen with 2-4 chennel all > -35dB no gain adjusted with wave mse loss
-    #model_path = os.path.join("checkpoints", "200430", "200430-40700") # this is yen with 2-6 chennel all > -35dB no gain adjusted with wave mse loss
-    #model_path = os.path.join("checkpoints", "797025", "797025-29100") # this is yen with 2-6 chennel all > -35dB no gain adjusted with wave mse loss 0.5 & perceptual loss
-    #model_path = os.path.join("checkpoints", "849853", "849853-62800") # this is yen with 2-6 chennel all > -35dB no gain adjusted with wave mse loss 0.9 & perceptual loss
-    model_path = os.path.join("checkpoints", "455880", "455880-48800") # this is yen with 2-6 chennel all > -35dB no gain adjusted with wave mse loss 0.8 & perceptual loss
-
-
-
-
-
+    model_path = os.path.join("checkpoints", "455880", "455880-48800")
 
     input_path = os.path.join("mixture.wav")
     output_path = "testoutput" # Where to save results. Default: Same location as input.
