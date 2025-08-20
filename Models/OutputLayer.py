@@ -15,7 +15,6 @@ def difference_output(input_mix, featuremap, source_names, num_channels, filter_
         outputs[name] = out
         sum_source = sum_source + out
 
-    # 计算最后一个 source：基于输入减去前面计算得到的和
     last_source = Utils.crop(input_mix, sum_source.get_shape().as_list()) - sum_source
     last_source = Utils.AudioClip(last_source, training)
     outputs[source_names[-1]] = last_source
