@@ -1,12 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Multi-channel Wave-U-Net training script (time-domain)
-----------------------------------------------------
-兼容单通道与多通道。请确保在 config 中添加
-    "num_channels": 2            # 例如立体声
-并让 Datasets、模型等返回 [B, T, C] 形状的数据。
-"""
-
 import os
 import functools
 
@@ -24,7 +15,6 @@ import Evaluate
 
 np.set_printoptions(precision=10, suppress=True)
 
-# 关闭 Eager Execution，以便继续使用 v1 图模式
 tf.compat.v1.disable_eager_execution()
 
 ex = Experiment('Waveunet Training', ingredients=[config_ingredient])
@@ -32,31 +22,20 @@ ex = Experiment('Waveunet Training', ingredients=[config_ingredient])
 @ex.config
 def set_seed():
     seed = 1337
-    # 可在 config 文件中覆盖
 
-# ------------------------------------------------------------------------- #
-#                              TRAINING LOOP                                #
-# ------------------------------------------------------------------------- #
 @config_ingredient.capture
 def train(model_config, experiment_id, load_model=None):
-    """
-    训练一次（一个 epoch_it），返回保存模型的路径
-    """
-    ### NEW / CHANGED ----------------------------------------------------- ###
-    # ----- 1. 支持多通道 -------------------------------------------------- #
+
     num_channels = int(model_config.get("num_channels", 1))
     if num_channels < 1:
-        raise ValueError("model_config['num_channels'] 必须 ≥ 1")
+        raise ValueError("model_config['num_channels'] must ≥ 1")
 
-    # 输入张量形状： [batch, frames, channels]
     disc_input_shape = [
         model_config["batch_size"],
         model_config["num_frames"],
         num_channels
     ]
-    ### ------------------------------------------------------------------- ###
 
-    # 构建分离器（Wave-U-Net 时域或频域）
     if model_config["network"] == "unet":
         separator_class = Models.UnetAudioSeparator.UnetAudioSeparator(model_config)
     elif model_config["network"] == "unet_spectrogram":
@@ -68,9 +47,6 @@ def train(model_config, experiment_id, load_model=None):
     sep_input_shape, sep_output_shape = separator_class.get_padding(np.array(disc_input_shape))
     separator_func = separator_class.get_output
 
-    # ------------------------------------------------------------------ #
-    #                            数据集                                   #
-    # ------------------------------------------------------------------ #
     dataset = Datasets.get_dataset(
         model_config,
         sep_input_shape,
@@ -78,13 +54,10 @@ def train(model_config, experiment_id, load_model=None):
         partition="train"
     )
     iterator = tf.compat.v1.data.make_one_shot_iterator(dataset)
-    batch = iterator.get_next()            # dict，包含 "mix" 与各 source 名
+    batch = iterator.get_next()
 
     print("Training...")
 
-    # ------------------------------------------------------------------ #
-    #                        前向传播 + 损失                              #
-    # ------------------------------------------------------------------ #
     separator_sources = separator_func(
         batch["mix"],
         training=True,
@@ -97,10 +70,8 @@ def train(model_config, experiment_id, load_model=None):
         real_source = batch[key]           # [B, T, C]
         sep_source  = separator_sources[key]
 
-        # 频谱域损失（如果启用）
         if (model_config["network"] == "unet_spectrogram" and
                 not model_config["raw_audio_loss"]):
-            # ------ 计算每个通道的 STFT 并求幅度损失 ------------------ #
             window = functools.partial(tf.signal.hann_window, periodic=True)
 
             # [B, T, C] -> [B*C, T]
@@ -117,8 +88,6 @@ def train(model_config, experiment_id, load_model=None):
             )                              # [B*C, F,  T’]
             real_mag = tf.abs(stfts)
 
-            # sep_source 需保证同样 [B, C, F, T’] 或 [B*C, F, T’]（由模型决定）
-            # 若模型输出 [B, C, F, T’]，则 reshape real_mag 以对齐：
             if len(sep_source.shape) == 4:     # [B, C, F, T’]
                 real_mag = tf.reshape(
                     real_mag,
@@ -128,14 +97,10 @@ def train(model_config, experiment_id, load_model=None):
 
             separator_loss += tf.reduce_mean(tf.abs(real_mag - sep_source))
         else:
-            # 时域 L2/L1
             separator_loss += tf.reduce_mean(tf.square(real_source - sep_source))
 
     separator_loss = separator_loss / float(model_config["num_sources"])
 
-    # ------------------------------------------------------------------ #
-    #                       优化器 & 变量收集                              #
-    # ------------------------------------------------------------------ #
     global_step = tf.compat.v1.get_variable(
         'global_step', [], initializer=tf.constant_initializer(0),
         trainable=False, dtype=tf.int64
@@ -156,9 +121,7 @@ def train(model_config, experiment_id, load_model=None):
     tf.compat.v1.summary.scalar("sep_loss", separator_loss, collections=["sup"])
     sup_summaries = tf.compat.v1.summary.merge_all(key='sup')
 
-    # ------------------------------------------------------------------ #
-    #                       Session & 日志                                #
-    # ------------------------------------------------------------------ #
+
     config_proto = tf.compat.v1.ConfigProto()
     config_proto.gpu_options.allow_growth = True
     sess = tf.compat.v1.Session(config=config_proto)
@@ -169,9 +132,7 @@ def train(model_config, experiment_id, load_model=None):
         graph=sess.graph
     )
 
-    # ------------------------------------------------------------------ #
-    #                    载入已有模型（若指定）                            #
-    # ------------------------------------------------------------------ #
+
     if load_model is not None:
         restorer = tf.compat.v1.train.Saver(
             tf.compat.v1.global_variables(),
@@ -187,9 +148,7 @@ def train(model_config, experiment_id, load_model=None):
         max_to_keep=3
     )
 
-    # ------------------------------------------------------------------ #
-    #                          训练循环                                   #
-    # ------------------------------------------------------------------ #
+
     _global_step = sess.run(global_step)
     _init_step = _global_step
 
@@ -198,9 +157,7 @@ def train(model_config, experiment_id, load_model=None):
         writer.add_summary(_sup_summaries, global_step=_global_step)
         _global_step = sess.run(increment_global_step)
 
-    # ------------------------------------------------------------------ #
-    #                          保存模型                                   #
-    # ------------------------------------------------------------------ #
+
     print("Finished epoch!")
     save_path = saver.save(
         sess,
@@ -215,14 +172,9 @@ def train(model_config, experiment_id, load_model=None):
 
     return save_path
 
-# ------------------------------------------------------------------------- #
-#                          HYPER-PARAMETER OPTIMISER                        #
-# ------------------------------------------------------------------------- #
 @config_ingredient.capture
 def optimise(model_config, experiment_id):
-    """
-    两阶段训练（预训练 + 微调），返回最佳模型路径和测试损失
-    """
+
     local_config = dict(model_config)
     epoch = 0
     best_loss = 1e10
@@ -289,14 +241,12 @@ def run(cfg):
 
     print("SCRIPT START")
 
-    # 创建目录
     for d in [model_config["model_base_dir"], model_config["log_dir"]]:
         os.makedirs(d, exist_ok=True)
 
     sup_model_path, sup_loss = optimise(experiment_id=cfg["experiment_id"])
     print(f"Supervised training finished! Model: {sup_model_path}  |  Loss: {sup_loss:.6f}")
 
-    # MUSDB 或自定义评估
     if model_config.get("task", "") != "custom":
         Evaluate.produce_musdb_source_estimates(
             model_config,
