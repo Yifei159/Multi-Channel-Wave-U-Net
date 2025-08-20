@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Wave-U-Net separator (time-domain) – now multi-channel ready
-"""
-
 import tensorflow as tf
 import numpy as np
 
