@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Configuration file (Sacred Ingredient) – supports multi-channel training
-"""
-
 import numpy as np
 from sacred import Ingredient
 
@@ -10,24 +5,6 @@ config_ingredient = Ingredient("cfg")
 
 @config_ingredient.config
 def cfg():
-    """
-    Base configuration.
-
-    Important parameters
-    --------------------
-    mono_downmix : bool
-        If True, all input audio will be down-mixed to mono before feeding
-        into the network.
-
-    num_channels : int
-        Number of channels *after* any optional down-mixing step.
-        • If mono_downmix=True, this must be 1.  
-        • If mono_downmix=False, set it to the actual number of channels you
-          wish to train on (usually 2 for stereo).
-    """
-    # ------------------------------------------------------------------ #
-    #   Paths                                                            #
-    # ------------------------------------------------------------------ #
     model_config = {
         "estimates_path": "estimates",   # folder must already exist
         "data_path": "data",
@@ -59,8 +36,8 @@ def cfg():
         #   Audio settings                                                   #
         # ------------------------------------------------------------------ #
         "expected_sr": 22050,
-        "mono_downmix": True,     # Set False to keep original channel count
-        "num_channels": 1,        # NEW – desired channel count after loading
+        "mono_downmix": False,
+        "num_channels": 3,
 
         # ------------------------------------------------------------------ #
         #   Network behaviour & training                                     #
@@ -68,7 +45,7 @@ def cfg():
         "output_type": "direct",
         "output_activation": "tanh",
         "context": False,
-        "network": "unet",          # "unet" (time) | "unet_spectrogram" (freq)
+        "network": "unet",          # "unet" (time) | "unet_spectrogram" (freq) this one is now changed 
         "upsampling": "linear",
         "task": "voice",            # 'voice' | 'multi_instrument' | 'custom'
         "augmentation": True,
