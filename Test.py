@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import os, functools, numpy as np, tensorflow as tf
 tf.compat.v1.disable_eager_execution()
 
@@ -10,7 +9,7 @@ np.set_printoptions(precision=10, suppress=True)
 
 def test(model_config, partition, model_folder, load_model):
     """Evaluate a trained separator on `partition`; return mean loss."""
-    # ------------- 1) 构图 -------------
+    # ------------- 1) graph -------------
     num_channels = model_config["num_channels"]
     disc_input_shape = [model_config["batch_size"],
                         model_config["num_frames"],
