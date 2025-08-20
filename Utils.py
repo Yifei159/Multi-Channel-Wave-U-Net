@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Utility helpers (tensor ops, audio I/O, etc.)
-
-本文件已经与多通道（num_channels ≥ 1）训练流程兼容。
-"""
-
 import numpy as np
 import tensorflow as tf
 import librosa
@@ -27,15 +20,6 @@ def getNumParams(tensors):
 #                  FEATURE MAP CROP & CONCAT (U-NET)                     #
 # ---------------------------------------------------------------------- #
 def crop_and_concat(x1, x2, match_feature_dim=True):
-    """
-    Center-crop `x1` to the spatial size of `x2` (if needed), then concat
-    on the *feature/channel* dimension (axis=2 for [B, T, C]).
-
-    Notes
-    -----
-    • 输入张量均假设形状为 [batch, width, features], 与网络内部一致。  
-    • 对于时域 Wave-U-Net，“features” 轴既包括卷积通道，也包括最终的音频通道。  
-    """
     if x2 is None:
         return x1
     x1 = crop(x1, x2.get_shape().as_list(), match_feature_dim)
@@ -46,10 +30,7 @@ def crop_and_concat(x1, x2, match_feature_dim=True):
 #                           DATA  AUGMENTATION                           #
 # ---------------------------------------------------------------------- #
 def random_amplify(sample):
-    """
-    Randomly attenuate each *source* track by 0.7–1.0, rebuild `mix`.
-    Multi-channel安全：对整个时间-通道矩阵统一缩放。
-    """
+
     for key, val in sample.items():
         if key != "mix":
             sample[key] = tf.random.uniform([], 0.7, 1.0) * val
