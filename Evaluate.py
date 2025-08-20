@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Prediction / evaluation helpers – multi-channel ready
-"""
-
 import os
 import glob
 import json
