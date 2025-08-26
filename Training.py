@@ -229,9 +229,6 @@ def optimise(model_config, experiment_id):
     )
     return best_model_path, test_loss
 
-# ------------------------------------------------------------------------- #
-#                               ENTRY POINT                                 #
-# ------------------------------------------------------------------------- #
 @ex.automain
 def run(cfg):
     """
