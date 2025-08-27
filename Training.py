@@ -231,9 +231,6 @@ def optimise(model_config, experiment_id):
 
 @ex.automain
 def run(cfg):
-    """
-    Sacred entry point
-    """
     model_config = cfg["model_config"]
 
     print("SCRIPT START")
