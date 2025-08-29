@@ -77,7 +77,7 @@ def test(model_config, partition, model_folder, load_model):
         try:
             lv = sess.run(loss)
             n += 1
-            total += (lv - total) / n          # running mean
+            total += (lv - total) / n        
         except tf.errors.OutOfRangeError:
             break
 
