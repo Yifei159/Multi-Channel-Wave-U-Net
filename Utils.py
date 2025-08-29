@@ -3,9 +3,6 @@ import tensorflow as tf
 import librosa
 
 
-# ---------------------------------------------------------------------- #
-#                      TENSORFLOW VARIABLE HELPERS                       #
-# ---------------------------------------------------------------------- #
 def getTrainableVariables(tag=""):
     """Return trainable variables containing `tag` in their name."""
     return [v for v in tf.compat.v1.trainable_variables() if tag in v.name]
