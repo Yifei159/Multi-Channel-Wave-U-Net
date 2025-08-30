@@ -13,9 +13,7 @@ import musdb
 
 import Utils
 
-# ---------------------------------------------------------------------- #
-#                         Helper: snippet extraction                     #
-# ---------------------------------------------------------------------- #
+
 def take_random_snippets(sample, keys, input_shape, num_samples):
     """
     Randomly sample `num_samples` snippets of length input_shape[0] frames
