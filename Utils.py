@@ -13,9 +13,6 @@ def getNumParams(tensors):
     return int(np.sum([np.prod(t.get_shape().as_list()) for t in tensors]))
 
 
-# ---------------------------------------------------------------------- #
-#                  FEATURE MAP CROP & CONCAT (U-NET)                     #
-# ---------------------------------------------------------------------- #
 def crop_and_concat(x1, x2, match_feature_dim=True):
     if x2 is None:
         return x1
