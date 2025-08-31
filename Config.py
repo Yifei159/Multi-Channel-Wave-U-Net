@@ -79,9 +79,6 @@ def cfg():
             "Either set mono_downmix=False or change num_channels to 1."
         )
 
-# ---------------------------------------------------------------------- #
-#   Example of a named configuration                                     #
-# ---------------------------------------------------------------------- #
 @config_ingredient.named_config
 def custom():
     """
