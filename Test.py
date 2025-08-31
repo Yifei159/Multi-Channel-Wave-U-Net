@@ -71,7 +71,7 @@ def test(model_config, partition, model_folder, load_model):
     tf.compat.v1.train.Saver(tf.compat.v1.global_variables()).restore(sess, load_model)
     print("Checkpoint restored – start evaluating")
 
-    # ------------- 5) loop -------------
+    # ------------- 5) loop --------------
     total, n = 0.0, 0
     while True:
         try:
