@@ -249,4 +249,4 @@ def run(cfg):
             model_config["estimates_path"]
         )
     else:
-        print("Custom dataset training finished – implement your own evaluation if needed.")
+        print("Custom training finished – implement your own evaluation if needed.")
