@@ -56,9 +56,9 @@ def cfg():
     # Random experiment ID
     experiment_id = np.random.randint(0, 1_000_000)
 
-    # ------------------------------------------------------------------ #
-    #   Derive source names according to task                            #
-    # ------------------------------------------------------------------ #
+    # ------------------------------------------------------------------- #
+    #   Derive source names according to task                             #
+    # ------------------------------------------------------------------- #
     if model_config["task"] == "multi_instrument":
         model_config["source_names"] = ["bass", "drums", "other", "vocals"]
     elif model_config["task"] == "voice":
