@@ -42,7 +42,6 @@ def predict(track, model_config, load_model, results_dir=None):
     # -------------------------------------------------------------- #
     #        1)  Build separator graph for *inference*               #
     # -------------------------------------------------------------- #
-    ### NEW / CHANGED: channel-explicit input shape ---------------- #
     disc_input_shape = [
         1,                                   # batch     (fixed to 1)
         model_config["num_frames"],          # samples
