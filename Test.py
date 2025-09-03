@@ -9,7 +9,7 @@ np.set_printoptions(precision=10, suppress=True)
 
 def test(model_config, partition, model_folder, load_model):
     """Evaluate a trained separator on `partition`; return mean loss."""
-    # ------------- 1) graph -------------
+    # ------------- 1) graph --------------
     num_channels = model_config["num_channels"]
     disc_input_shape = [model_config["batch_size"],
                         model_config["num_frames"],
