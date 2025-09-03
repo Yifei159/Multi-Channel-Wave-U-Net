@@ -88,7 +88,7 @@ def train(model_config, experiment_id, load_model=None):
             )                              # [B*C, F,  T’]
             real_mag = tf.abs(stfts)
 
-            if len(sep_source.shape) == 4:     # [B, C, F, T’]
+            if len(sep_source.shape) == 4: 
                 real_mag = tf.reshape(
                     real_mag,
                     [tf.shape(real_source)[0], num_channels,
