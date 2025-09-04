@@ -107,7 +107,7 @@ def write_records(sample_list, model_config, input_shape, output_shape, records_
                 if audio.ndim == 1:
                     audio = np.expand_dims(audio, axis=1)
 
-                ### NEW / CHANGED: enforce num_channels ---------------- #
+                ### NEW / CHANGED: enforce num_channels --------------- #
                 desired_ch = model_config["num_channels"]
                 if audio.shape[1] != desired_ch:
                     if audio.shape[1] == 1 and desired_ch > 1:
