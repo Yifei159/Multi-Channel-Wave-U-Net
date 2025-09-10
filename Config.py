@@ -47,7 +47,7 @@ def cfg():
         "context": False,
         "network": "unet",          # "unet" (time) | "unet_spectrogram" (freq) this one is now changed 
         "upsampling": "linear",
-        "task": "voice",            # 'voice' | 'multi_instrument' | 'custom'
+        "task": "voice",            # 'voice' | 'multi_instrument' | 'custom' 
         "augmentation": True,
         "raw_audio_loss": True,     # for unet_spectrogram: False -> L1 spec loss
         "worse_epochs": 15,
