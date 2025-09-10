@@ -132,7 +132,6 @@ def train(model_config, experiment_id, load_model=None):
         graph=sess.graph
     )
 
-
     if load_model is not None:
         restorer = tf.compat.v1.train.Saver(
             tf.compat.v1.global_variables(),
