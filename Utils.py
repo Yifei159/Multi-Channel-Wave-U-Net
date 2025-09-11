@@ -20,8 +20,7 @@ def crop_and_concat(x1, x2, match_feature_dim=True):
     return tf.concat([x1, x2], axis=2)
 
 
-# ---------------------------------------------------------------------- #
-#                           DATA  AUGMENTATION                           #
+# DATA  AUGMENTATION
 def random_amplify(sample):
 
     for key, val in sample.items():
