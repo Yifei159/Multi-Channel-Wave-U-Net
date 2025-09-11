@@ -35,7 +35,7 @@ def test(model_config, partition, model_folder, load_model):
                        return_spectrogram=not model_config["raw_audio_loss"],
                        reuse=False)
 
-    # ------------- 3) loss -------------
+    # ------------- 3) loss --------------
     loss = 0.0
     for key in model_config["source_names"]:
         real = batch[key]          # [B,T,C]
