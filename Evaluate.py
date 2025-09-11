@@ -15,7 +15,7 @@ import Utils
 
 np.set_printoptions(precision=10, suppress=True)
 
-tf.compat.v1.disable_eager_execution()     # graph mode
+tf.compat.v1.disable_eager_execution()      # graph mode
 
 
 # ---------------------------------------------------------------------- #
