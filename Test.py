@@ -29,7 +29,7 @@ def test(model_config, partition, model_folder, load_model):
     iterator = tf.compat.v1.data.make_one_shot_iterator(dataset)
     batch    = iterator.get_next()
 
-    # ------------- 2) forward -------------
+    # ------------- 2) forward --------------
     sep_out = sep_func(batch["mix"],
                        training=False,
                        return_spectrogram=not model_config["raw_audio_loss"],
