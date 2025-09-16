@@ -50,7 +50,7 @@ def cfg():
         "task": "voice",            # 'voice' | 'multi_instrument' | 'custom' 
         "augmentation": True,
         "raw_audio_loss": True,     # for unet_spectrogram: False -> L1 spec loss
-        "worse_epochs": 15,
+        "worse_epochs": 15, 
     }
 
     # Random experiment ID
