@@ -10,7 +10,7 @@ def cfg():
     model_path = os.path.join("checkpoints", "455880", "455880-48800")
 
     input_path = os.path.join("mixture.wav")
-    output_path = "testoutput" # Where to save results. Default: Same location as input.
+    output_path = "testoutput"
 
 @ex.automain
 def main(cfg, model_path, input_path, output_path):
