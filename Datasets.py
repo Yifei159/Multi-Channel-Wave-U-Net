@@ -14,10 +14,6 @@ import Utils
 
 
 def take_random_snippets(sample, keys, input_shape, num_samples):
-    """
-    Randomly sample `num_samples` snippets of length input_shape[0] frames
-    from the given track.
-    """
     start_pos = tf.random.uniform(
         [num_samples],
         minval=0,
