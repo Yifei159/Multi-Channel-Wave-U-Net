@@ -6,7 +6,7 @@ config_ingredient = Ingredient("cfg")
 @config_ingredient.config
 def cfg():
     model_config = {
-        "estimates_path": "estimates",   # folder must already exist
+        "estimates_path": "estimates", 
         "data_path": "data",
 
         # ------------------------------------------------------------------ #
