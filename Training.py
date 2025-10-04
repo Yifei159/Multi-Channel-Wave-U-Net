@@ -85,7 +85,7 @@ def train(model_config, experiment_id, load_model=None):
                 frame_step=768,
                 fft_length=1024,
                 window_fn=window
-            )                             # [B*C, F,  T’]
+            )                  
             real_mag = tf.abs(stfts)
 
             if len(sep_source.shape) == 4: 
