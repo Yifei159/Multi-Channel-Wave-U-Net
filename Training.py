@@ -147,7 +147,6 @@ def train(model_config, experiment_id, load_model=None):
         max_to_keep=3
     )
 
-
     _global_step = sess.run(global_step)
     _init_step = _global_step
 
