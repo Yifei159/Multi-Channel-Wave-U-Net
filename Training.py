@@ -155,7 +155,6 @@ def train(model_config, experiment_id, load_model=None):
         writer.add_summary(_sup_summaries, global_step=_global_step)
         _global_step = sess.run(increment_global_step)
 
-
     print("Finished epoch!")
     save_path = saver.save(
         sess,
