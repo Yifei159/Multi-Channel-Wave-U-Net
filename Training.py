@@ -1,6 +1,5 @@
 import os
 import functools
-
 from sacred import Experiment
 from Config import config_ingredient
 import tensorflow as tf
