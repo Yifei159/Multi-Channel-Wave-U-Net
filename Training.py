@@ -164,7 +164,6 @@ def train(model_config, experiment_id, load_model=None):
     writer.close()
     sess.close()
     tf.compat.v1.reset_default_graph()
-
     return save_path
 
 @config_ingredient.capture
