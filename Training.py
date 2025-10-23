@@ -41,7 +41,6 @@ def train(model_config, experiment_id, load_model=None):
     else:
         raise NotImplementedError("Unknown network type: " + model_config["network"])
         
-
     sep_input_shape, sep_output_shape = separator_class.get_padding(np.array(disc_input_shape))
     separator_func = separator_class.get_output
 
