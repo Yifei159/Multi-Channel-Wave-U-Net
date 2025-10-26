@@ -118,7 +118,6 @@ def train(model_config, experiment_id, load_model=None):
     tf.compat.v1.summary.scalar("sep_loss", separator_loss, collections=["sup"])
     sup_summaries = tf.compat.v1.summary.merge_all(key='sup')
 
-
     config_proto = tf.compat.v1.ConfigProto()
     config_proto.gpu_options.allow_growth = True
     sess = tf.compat.v1.Session(config=config_proto)
